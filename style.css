@@ -17,6 +17,18 @@ nav {
   justify-content: center;
   background: #005fa3;
   padding: 0.5rem;
+  position: relative;
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+nav li {
+  position: relative;
 }
 
 nav a {
@@ -25,11 +37,35 @@ nav a {
   padding: 0.8rem 1.2rem;
   margin: 0.2rem;
   border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   transition: background 0.3s;
 }
 
 nav a:hover {
   background-color: #004a82;
+}
+
+/* Submenú */
+nav li ul {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  flex-direction: column;
+  background: #004a82;
+  border-radius: 6px;
+  min-width: 180px;
+  z-index: 10;
+}
+
+nav li:hover ul {
+  display: flex;
+}
+
+nav li ul li a {
+  margin: 0;
 }
 
 main {
@@ -48,9 +84,14 @@ form {
   margin-top: 1rem;
 }
 
-input, button {
+input, button, textarea {
   padding: 0.5rem;
   font-size: 1rem;
+}
+
+textarea {
+  resize: vertical;
+  height: 60px;
 }
 
 button {
@@ -66,8 +107,7 @@ button:hover {
 }
 
 @media (max-width: 600px) {
-  nav a {
-    flex: 1 0 100%;
-    text-align: center;
+  nav ul {
+    flex-direction: column;
   }
 }

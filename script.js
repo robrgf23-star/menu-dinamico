@@ -1,53 +1,99 @@
-// Cargar el menú dinámicamente desde menu.json
+let menuOpciones = [];
+
+// Cargar menú desde JSON inicial
 async function cargarMenu() {
-  const respuesta = await fetch('./data/menu.json');
-  const datos = await respuesta.json();
-  renderizarMenu(datos.menu);
+  try {
+    const respuesta = await fetch('./data/menu.json');
+    const datos = await respuesta.json();
+    menuOpciones = datos.menu;
+    renderizarMenu();
+  } catch (err) {
+    console.error('Error al cargar menu.json', err);
+  }
 }
 
-// Renderiza las opciones del menú en el HTML
-function renderizarMenu(opciones) {
+function renderizarMenu() {
   const menu = document.getElementById('menu');
-  menu.innerHTML = ''; // Limpia el menú antes de renderizar
+  menu.innerHTML = '';
+  const ul = document.createElement('ul');
 
-  opciones.forEach(opcion => {
+  menuOpciones.forEach(opcion => {
+    const li = document.createElement('li');
     const enlace = document.createElement('a');
-    enlace.textContent = opcion.nombre;
+
+    // Ícono
+    if (opcion.icono) {
+      const icono = document.createElement('i');
+      icono.className = `fa-solid ${opcion.icono}`;
+      enlace.appendChild(icono);
+    }
+
+    enlace.appendChild(document.createTextNode(opcion.nombre));
     enlace.href = opcion.enlace;
     enlace.addEventListener('click', e => {
       e.preventDefault();
       mostrarContenido(opcion.nombre);
     });
-    menu.appendChild(enlace);
+
+    li.appendChild(enlace);
+
+    // Submenús
+    if (opcion.subMenu && opcion.subMenu.length > 0) {
+      const subUl = document.createElement('ul');
+      opcion.subMenu.forEach(sub => {
+        const subLi = document.createElement('li');
+        const subA = document.createElement('a');
+        subA.textContent = sub.nombre;
+        subA.href = sub.enlace;
+        subA.addEventListener('click', e => {
+          e.preventDefault();
+          mostrarContenido(sub.nombre);
+        });
+        subLi.appendChild(subA);
+        subUl.appendChild(subLi);
+      });
+      li.appendChild(subUl);
+    }
+
+    ul.appendChild(li);
   });
+
+  menu.appendChild(ul);
 }
 
-// Simula cambiar el contenido principal
 function mostrarContenido(nombre) {
   const contenido = document.getElementById('contenido');
   contenido.innerHTML = `<h2>${nombre}</h2><p>Has seleccionado la sección "${nombre}".</p>`;
 }
 
-// Agregar nueva opción al menú dinámicamente
+// Agregar opción desde formulario
 document.getElementById('formAgregar').addEventListener('submit', e => {
   e.preventDefault();
   const nombre = document.getElementById('nombre').value.trim();
   const enlace = document.getElementById('enlace').value.trim();
+  const icono = document.getElementById('icono').value.trim();
+  const subMenuText = document.getElementById('subMenu').value.trim();
 
-  if (nombre && enlace) {
-    const nuevaOpcion = { id: Date.now(), nombre, enlace };
-    // Agrega la nueva opción en la interfaz sin recargar
-    const enlaceNuevo = document.createElement('a');
-    enlaceNuevo.textContent = nuevaOpcion.nombre;
-    enlaceNuevo.href = nuevaOpcion.enlace;
-    enlaceNuevo.addEventListener('click', ev => {
-      ev.preventDefault();
-      mostrarContenido(nuevaOpcion.nombre);
+  let subMenu = [];
+  if (subMenuText) {
+    // Cada línea "nombre|enlace"
+    subMenu = subMenuText.split('\n').map(line => {
+      const [n, e] = line.split('|').map(s => s.trim());
+      return { id: Date.now() + Math.random(), nombre: n, enlace: e };
     });
-    document.getElementById('menu').appendChild(enlaceNuevo);
-    e.target.reset();
   }
+
+  const nuevaOpcion = {
+    id: Date.now(),
+    nombre,
+    enlace,
+    icono,
+    subMenu
+  };
+
+  menuOpciones.push(nuevaOpcion);
+  renderizarMenu();
+  e.target.reset();
 });
 
-// Inicializa el menú al cargar la página
 cargarMenu();
