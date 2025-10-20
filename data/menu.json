@@ -3,22 +3,78 @@
     {
       "id": 1,
       "nombre": "Inicio",
-      "enlace": "/inicio"
+      "enlace": "/inicio",
+      "icono": "fa-home",
+      "padre": null
     },
     {
       "id": 2,
       "nombre": "Sobre Nosotros",
-      "enlace": "/sobre-nosotros"
+      "enlace": "/sobre-nosotros",
+      "icono": "fa-info",
+      "padre": null,
+      "submenu": [
+        {
+          "id": 21,
+          "nombre": "Nuestra Historia",
+          "enlace": "/sobre-nosotros/historia",
+          "icono": "fa-history",
+          "padre": 2
+        },
+        {
+          "id": 22,
+          "nombre": "Equipo",
+          "enlace": "/sobre-nosotros/equipo",
+          "icono": "fa-users",
+          "padre": 2
+        }
+      ]
     },
     {
       "id": 3,
       "nombre": "Servicios",
-      "enlace": "/servicios"
+      "enlace": "/servicios",
+      "icono": "fa-cogs",
+      "padre": null,
+      "submenu": [
+        {
+          "id": 31,
+          "nombre": "Desarrollo Web",
+          "enlace": "/servicios/desarrollo-web",
+          "icono": "fa-code",
+          "padre": 3,
+          "submenu": [
+            {
+              "id": 311,
+              "nombre": "Frontend",
+              "enlace": "/servicios/desarrollo-web/frontend",
+              "icono": "fa-paint-brush",
+              "padre": 31
+            },
+            {
+              "id": 312,
+              "nombre": "Backend",
+              "enlace": "/servicios/desarrollo-web/backend",
+              "icono": "fa-server",
+              "padre": 31
+            }
+          ]
+        },
+        {
+          "id": 32,
+          "nombre": "Consultoría",
+          "enlace": "/servicios/consultoria",
+          "icono": "fa-chart-line",
+          "padre": 3
+        }
+      ]
     },
     {
       "id": 4,
       "nombre": "Contacto",
-      "enlace": "/contacto"
+      "enlace": "/contacto",
+      "icono": "fa-envelope",
+      "padre": null
     }
   ]
 }
