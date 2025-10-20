@@ -54,19 +54,89 @@ class DynamicMenu {
         const text = document.createTextNode(item.nombre);
         link.appendChild(text);
 
-        // Verificar si tiene submenú
-        const submenuItems = this.getSubmenuItems(item.id);
-        if (submenuItems.length > 0) {
+        // Verificar si tiene mega menú
+        if (item.megaMenu && item.megaContent) {
             link.classList.add('has-submenu');
-            const submenu = this.createSubmenu(submenuItems);
-            li.appendChild(submenu);
+            const megaMenu = this.createMegaMenu(item.megaContent);
+            li.appendChild(megaMenu);
+        }
+        // Verificar si tiene submenú normal
+        else {
+            const submenuItems = this.getSubmenuItems(item.id);
+            if (submenuItems.length > 0) {
+                link.classList.add('has-submenu');
+                const submenu = this.createSubmenu(submenuItems);
+                li.appendChild(submenu);
+            }
         }
 
         li.appendChild(link);
         return li;
     }
 
-    // Crear submenú recursivo
+    // Crear MEGA MENU
+    createMegaMenu(megaContent) {
+        const megaMenu = document.createElement('div');
+        megaMenu.className = 'mega-menu';
+
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'mega-menu-content';
+
+        // Crear secciones
+        megaContent.sections.forEach(section => {
+            const sectionDiv = document.createElement('div');
+            sectionDiv.className = 'mega-menu-section';
+
+            const title = document.createElement('h4');
+            title.className = 'mega-menu-title';
+            title.textContent = section.title;
+            sectionDiv.appendChild(title);
+
+            const linksList = document.createElement('ul');
+            linksList.className = 'mega-menu-links';
+
+            section.links.forEach(linkItem => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = linkItem.enlace;
+
+                if (linkItem.icono) {
+                    const icon = document.createElement('i');
+                    icon.className = linkItem.icono;
+                    a.appendChild(icon);
+                }
+
+                a.appendChild(document.createTextNode(linkItem.nombre));
+                li.appendChild(a);
+                linksList.appendChild(li);
+            });
+
+            sectionDiv.appendChild(linksList);
+            contentDiv.appendChild(sectionDiv);
+        });
+
+        megaMenu.appendChild(contentDiv);
+
+        // Agregar información adicional si existe
+        if (megaContent.info) {
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'mega-menu-info';
+            
+            const infoTitle = document.createElement('h4');
+            infoTitle.textContent = megaContent.info.title;
+            infoDiv.appendChild(infoTitle);
+
+            const infoContent = document.createElement('p');
+            infoContent.textContent = megaContent.info.content;
+            infoDiv.appendChild(infoContent);
+
+            megaMenu.appendChild(infoDiv);
+        }
+
+        return megaMenu;
+    }
+
+    // Crear submenú recursivo normal
     createSubmenu(items) {
         const ul = document.createElement('ul');
         ul.className = 'submenu';
@@ -141,6 +211,18 @@ class DynamicMenu {
         // Toggle menú móvil
         this.mobileToggle.addEventListener('click', () => {
             this.navElement.classList.toggle('active');
+        });
+
+        // Cerrar mega menús al hacer scroll
+        window.addEventListener('scroll', () => {
+            this.closeAllMenus();
+        });
+    }
+
+    // Cerrar todos los menús
+    closeAllMenus() {
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.classList.remove('active');
         });
     }
 
