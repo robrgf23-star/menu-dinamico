@@ -4,6 +4,7 @@ class DynamicMenu {
         this.menuData = getMenuData();
         this.navElement = document.getElementById('main-nav');
         this.formElement = document.getElementById('menu-form');
+        this.mobileToggle = document.querySelector('.mobile-menu-toggle');
         this.init();
     }
 
@@ -43,8 +44,11 @@ class DynamicMenu {
         // Agregar ícono si existe
         if (item.icono) {
             const icon = document.createElement('i');
-            icon.className = `icon ${item.icono}`;
+            icon.className = item.icono;
             link.appendChild(icon);
+            
+            // Agregar espacio después del ícono
+            link.appendChild(document.createTextNode(' '));
         }
 
         const text = document.createTextNode(item.nombre);
@@ -133,6 +137,11 @@ class DynamicMenu {
             exportMenuData();
             this.showMessage('JSON exportado correctamente', 'success');
         });
+
+        // Toggle menú móvil
+        this.mobileToggle.addEventListener('click', () => {
+            this.navElement.classList.toggle('active');
+        });
     }
 
     // Manejar envío del formulario
@@ -162,6 +171,15 @@ class DynamicMenu {
                     const navItem = navLink.parentElement;
                     navItem.classList.toggle('active');
                 }
+            }
+        });
+
+        // Cerrar menú al hacer clic fuera
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768 && 
+                !e.target.closest('.main-nav') && 
+                !e.target.closest('.mobile-menu-toggle')) {
+                this.navElement.classList.remove('active');
             }
         });
     }
@@ -197,10 +215,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Manejar cambios de tamaño de ventana para responsive
 window.addEventListener('resize', () => {
+    const navElement = document.getElementById('main-nav');
     // Cerrar todos los submenús en móvil cuando se cambie a escritorio
     if (window.innerWidth > 768) {
         document.querySelectorAll('.nav-item.active').forEach(item => {
             item.classList.remove('active');
         });
+        navElement.classList.remove('active');
     }
 });

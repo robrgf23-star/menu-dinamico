@@ -3,23 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menú Dinámico Multinivel</title>
+    <title>TechSolutions - Innovación Digital</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
     <header>
-        <nav id="main-nav" class="main-nav">
-            <!-- El menú se generará dinámicamente aquí -->
-        </nav>
+        <div class="header-container">
+            <div class="logo">
+                <i class="fas fa-laptop-code"></i>
+                <span>TechSolutions</span>
+            </div>
+            <nav id="main-nav" class="main-nav">
+                <!-- El menú se generará dinámicamente aquí -->
+            </nav>
+            <div class="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
     </header>
 
     <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Soluciones Tecnológicas para tu Empresa</h1>
+                <p>Impulsamos tu transformación digital con soluciones innovadoras y personalizadas</p>
+                <button class="cta-button">Comenzar Proyecto</button>
+            </div>
+        </section>
+
         <section class="content">
-            <h1>Bienvenido al Sistema de Menú Dinámico</h1>
-            <p>Este menú se genera completamente desde datos JSON y es completamente responsive.</p>
-            
+            <div class="features">
+                <div class="feature-card">
+                    <i class="fas fa-rocket"></i>
+                    <h3>Innovación</h3>
+                    <p>Tecnología de vanguardia para resultados excepcionales</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Seguridad</h3>
+                    <p>Protección robusta para tus datos y aplicaciones</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-headset"></i>
+                    <h3>Soporte 24/7</h3>
+                    <p>Asistencia técnica cuando más la necesitas</p>
+                </div>
+            </div>
+
             <div class="admin-panel">
-                <h2>Panel de Administración</h2>
+                <h2>Panel de Administración del Menú</h2>
                 <form id="menu-form" class="menu-form">
                     <div class="form-group">
                         <label for="menu-id">ID:</label>
@@ -52,7 +85,12 @@
         </section>
     </main>
 
-    <script src="data/menu.json"></script>
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 TechSolutions. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
     <script src="scripts/menuData.js"></script>
     <script src="scripts/menu.js"></script>
 </body>
